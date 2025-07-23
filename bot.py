@@ -45,6 +45,7 @@ async def status_check():
         if has_dollsick and not has_role:
             await member.add_roles(role)
             if channel:
+                await channel.send(f"{member.mention}")  # Ping to trigger notification
                 embed = discord.Embed(
                     description=f"<:pusheen:1353024978722750464>  <:002_symbol2:1362146530227912775>   {member.mention} got <@&{ROLE_ID}> for including `/dollsick` in their status.",
                     color=pastel_pink
@@ -54,6 +55,7 @@ async def status_check():
         elif not has_dollsick and has_role:
             await member.remove_roles(role)
             if channel:
+                await channel.send(f"{member.mention}")  # Ping to trigger notification
                 embed = discord.Embed(
                     description=f"<a:pusheenblink:1397529491403837491>  <:002_symbol2:1362146530227912775>   {member.mention} lost their role because they didn't include vanity link.",
                     color=pastel_pink
