@@ -32,7 +32,11 @@ async def status_check():
     channel = guild.get_channel(CHANNEL_ID)
 
     for member in guild.members:
-        if member.bot or member.status == discord.Status.offline:
+        if member.bot:
+            continue
+
+        # Skip users who are idle, dnd, or invisible
+        if member.status in [discord.Status.offline, discord.Status.invisible]:
             continue
 
         custom_status = None
@@ -55,7 +59,7 @@ async def status_check():
                 )
                 await channel.send(embed=embed)
 
-        elif not has_dollsick and has_role and had_dollsick_before:
+        elif not has_dollsick and has_role and had_dollsick_before and custom_status is not None:
             await member.remove_roles(role)
             status_cache[member.id] = False
             if channel:
